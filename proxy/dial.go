@@ -72,7 +72,7 @@ func newProxyDial(proxyUrls string) proxy.Dialer {
 	var proxyDialer proxy.Dialer = proxy.Direct // 初始为直接连接，不使用代理
 
 	// 支持多个代理 URL（以逗号分隔）
-	for _, proxyUrl := range strings.Split(proxyUrls, ",") {
+	for proxyUrl := range strings.SplitSeq(proxyUrls, ",") {
 		proxyUrl = strings.TrimSpace(proxyUrl) // 去除首尾空格
 		if proxyUrl == "" {                    // 跳过空的代理 URL
 			continue

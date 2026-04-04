@@ -52,35 +52,35 @@ func InitHandleRouter(cfg *config.Config, r *touka.Engine, version string) {
 func SizeLimitHandler(cfg *config.Config, c *touka.Context) {
 	sizeLimit := cfg.Server.SizeLimit
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"MaxResponseBodySize": sizeLimit,
 	}))
 }
 
 func WhiteListStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"Whitelist": cfg.Whitelist.Enabled,
 	}))
 }
 
 func BlackListStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"Blacklist": cfg.Blacklist.Enabled,
 	}))
 }
 
 func CorsStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"Cors": cfg.Server.Cors,
 	}))
 }
 
 func HealthcheckHandler(c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"Status": "OK",
 		"Repo":   "WJQSERVER-STUDIO/GHProxy",
 		"Author": "WJQSERVER-STUDIO",
@@ -89,7 +89,7 @@ func HealthcheckHandler(c *touka.Context) {
 
 func VersionHandler(c *touka.Context, version string) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"Version": version,
 		"Repo":    "WJQSERVER-STUDIO/GHProxy",
 		"Author":  "WJQSERVER-STUDIO",
@@ -98,35 +98,35 @@ func VersionHandler(c *touka.Context, version string) {
 
 func RateLimitStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"RateLimit": cfg.RateLimit.Enabled,
 	}))
 }
 
 func RateLimitLimitHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"RatePerMinute": cfg.RateLimit.RatePerMinute,
 	}))
 }
 
 func SmartGitStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"enabled": cfg.GitClone.Mode == "cache",
 	}))
 }
 
 func shellNestStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"enabled": cfg.Shell.Editor,
 	}))
 }
 
 func ociProxyStatusHandler(cfg *config.Config, c *touka.Context) {
 	c.SetHeader("Content-Type", "application/json")
-	c.JSON(200, (map[string]interface{}{
+	c.JSON(200, (map[string]any{
 		"enabled": cfg.Docker.Enabled,
 		"target":  cfg.Docker.Target,
 	}))

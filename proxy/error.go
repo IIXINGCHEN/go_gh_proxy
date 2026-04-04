@@ -289,7 +289,7 @@ func getParsedTemplate() (*template.Template, error) {
 }
 
 // htmlTemplateRender 修改为使用缓存的模板。
-func htmlTemplateRender(data interface{}) ([]byte, error) {
+func htmlTemplateRender(data any) ([]byte, error) {
 	tmpl, err := getParsedTemplate()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get parsed template: %w", err)

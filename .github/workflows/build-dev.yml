@@ -12,7 +12,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: 加载版本号
         run: |
           if [ -f DEV-VERSION ]; then
@@ -21,7 +21,7 @@ jobs:
             echo "DEV-VERSION file not found!" && exit 1
           fi
       - name: 输出版本号
-        run: | 
+        run: |
           echo "Version: ${{ env.VERSION }}"
       - name: 预先创建Pre-release
         id: create_release
@@ -46,10 +46,9 @@ jobs:
         goarch: [amd64, arm64]
     env:
       OUTPUT_BINARY: ghproxy
-      GO_VERSION: 1.25
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: dev
       - name: 加载版本号
@@ -63,11 +62,11 @@ jobs:
         run: |
           sudo git clone https://github.com/WJQSERVER-STUDIO/GHProxy-Frontend.git pages
           sudo rm -rf pages/.git/
-          
+
       - name: 安装 Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
       - name: 编译
         env:
           GOOS: ${{ matrix.goos }}
@@ -83,7 +82,7 @@ jobs:
           tar -czf ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}.tar.gz -C ghproxyd .
           ls
       - name: 上传Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.OUTPUT_BINARY }}-${{matrix.goos}}-${{matrix.goarch}}
           path: |
@@ -100,8 +99,8 @@ jobs:
           prerelease: true
           body: ${{ env.VERSION }}
         env:
-          export PATH: $PATH:/usr/local/go/bin 
-              
+          export PATH: $PATH:/usr/local/go/bin
+
   docker:
     runs-on: ubuntu-latest
     needs: build
@@ -109,10 +108,10 @@ jobs:
       IMAGE_NAME: wjqserver/ghproxy
       DOCKERFILE: docker/dockerfile/dev/Dockerfile
       DOCKERFILE_PATH: docker/dockerfile/dev
-        
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: dev
       - name: Load VERSION
@@ -121,26 +120,26 @@ jobs:
             echo "VERSION=$(cat DEV-VERSION)" >> $GITHUB_ENV
           else
             echo "DEV-VERSION file not found!" && exit 1
-          fi        
+          fi
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: 构建镜像
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: ./${{ env.DOCKERFILE }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: | 
+          tags: |
             ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
             ${{ env.IMAGE_NAME }}:dev
