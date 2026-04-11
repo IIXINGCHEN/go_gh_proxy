@@ -517,7 +517,7 @@ func main() {
 	defer logger.Close()
 
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	err := r.RunShutdown(addr)
+	err := r.Run(touka.WithAddr(addr), touka.WithGracefulShutdownDefault())
 	if err != nil {
 		logger.Errorf("Server Run Error: %v", err)
 		fmt.Printf("Server Run Error: %v\n", err)

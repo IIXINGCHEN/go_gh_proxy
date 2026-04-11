@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -12,7 +13,6 @@ import (
 	"ghproxy/config"
 	"ghproxy/weakcache"
 
-	"github.com/WJQSERVER-STUDIO/go-utils/iox"
 	"github.com/WJQSERVER-STUDIO/go-utils/limitreader"
 	"github.com/go-json-experiment/json"
 	"github.com/infinite-iroha/touka"
@@ -363,7 +363,7 @@ func GhcrRequest(ctx context.Context, c *touka.Context, u string, image *imageIn
 	// 如果最终响应是 404, 则读取响应体并返回自定义错误页面
 	if resp.StatusCode == 404 {
 		defer resp.Body.Close() // 使用defer确保在函数返回前关闭响应体
-		bodyBytes, err := iox.ReadAll(resp.Body)
+		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 			c.Warnf("Failed to read upstream 404 response body: %v", err)
 		} else {
@@ -481,7 +481,7 @@ func ChallengeReq(target string, image *imageInfo, ctx context.Context, c *touka
 	defer authResp.Body.Close() // 确保响应体关闭
 
 	// 读取认证响应体
-	bodyBytes, err := iox.ReadAll(authResp.Body)
+	bodyBytes, err := io.ReadAll(authResp.Body)
 	if err != nil {
 		c.Errorf("Failed to read auth response body: %v", err)
 		return
