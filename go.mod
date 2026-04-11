@@ -10,7 +10,6 @@ require (
 )
 
 require (
-	github.com/WJQSERVER-STUDIO/go-utils/iox v0.0.3
 	github.com/WJQSERVER-STUDIO/go-utils/limitreader v0.0.2
 	github.com/WJQSERVER/wanf v0.0.8
 	github.com/fenthope/bauth v0.0.1
@@ -25,6 +24,7 @@ require (
 )
 
 require (
+	github.com/WJQSERVER-STUDIO/go-utils/iox v0.0.3 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	golang.org/x/text v0.36.0 // indirect
 )
